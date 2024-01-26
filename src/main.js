@@ -26,6 +26,7 @@ function cargarRanking(){
 
 function cargarJuego(){
     document.querySelector('main').innerHTML = jugar.template;
+    jugar.script()
 }
 
 
