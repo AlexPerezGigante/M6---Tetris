@@ -21,6 +21,7 @@ function cargarHome(){
 
 function cargarRanking(){
     document.querySelector('main').innerHTML = ranking.template;
+    ranking.script();
 }
 
 function cargarJuego(){
