@@ -9,7 +9,7 @@ const partida = [
     },
     {
         avatar: "https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg",
-        nick: "ANDER",
+        nick: "ANDER asda",
         puntos: "600",
         fecha: "13 FEBRERO 2023",
     },
@@ -137,4 +137,75 @@ function pintaDatosPartida(partida) {
     } else {
         console.log("No has guardado la partida!");
     }
+}
+
+// Esta función recibe un nombre y le cambia los espacios por _ y lo pone en mayúsculas, tambíen tiene un control de errores para que no pueda recibir un nombre vacío y lo devuelve
+function modificaNick(nick){
+	if(nick.lengh==0){
+		alert("El nick no pot estar en blanc")
+		return(null)
+	}
+	else{
+		let nuevoNick=nick.replaceAll(" ", "_")
+		nuevoNick=nuevoNick.trim()
+		nuevoNick=nuevoNick.toUpperCase()
+		return(nuevoNick)
+	}
+}
+
+// Esta función recibe una fecha y le cambia el formato
+function modificaData(data){
+	
+	// “27 enero 2022 - 18:05:12”
+	console.log("modificaData")
+	const mes=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]
+	const miData = new Date(data)
+	const fecha=miData.getDay()+" "+mes[miData.getMonth()-1]+" "+miData.getFullYear()+" - "+miData.getHours()+":"+miData.getMinutes()+":"+miData.getSeconds()
+	return(fecha)
+}
+
+// Esta función recibe una fecha y le cambia el formato
+function modificaData2(data=new Date()){
+	const fecha=data.getFullYear()+"/"+data.getMonth()+"/"+data.getDay()+"T"+data.getHours()+":"+data.getMinutes()+":"+data.getSeconds()
+	return(fecha)
+}
+
+// Esta función calcula los dias que han pasado a partir de una fecha que recibirá y la hora actual.
+function dias(dataText){
+	const miData = new Date(dataText)
+	const fechaActual = new Date()
+	const diferencia=fechaActual.getTime()- miData.getTime()
+	const diasTranscurridos=diferencia/86400000
+	return(Math.floor(diasTranscurridos))
+}
+
+const ls = {
+	avatar : 'imagen2.png',
+	nick : 'PEDRA',
+	puntuacion : 1561,
+	fecha : '23/09/05T13:12:00'
+}
+
+// Esta función agrega a localStorage un objeto.
+function lsSetDades(dades){
+	const tetris_Dades = JSON.stringify(dades)
+	localStorage.setItem('tetris_Dades', tetris_Dades)
+	return(true)
+}
+
+// Esta función lee el localStorage devuelve un onbjeto JSON
+function lsGetDades(){
+	const textoLocal = localStorage.getItem('tetris_Dades')
+	const dades = JSON.parse(textoLocal)
+	console.log(dades)
+	return(dades)
+}
+
+// Esta función recibe un objeto, lee el localStorage, agrega un registro al objeto JSON del localStorage y lo vueve a subir al localStorage
+function registraPartida(partida){
+	const textoLocal = localStorage.getItem('tetris_Dades')
+	const dades = JSON.parse(textoLocal)
+	dades.push(partida)
+	const tetris_Dades = JSON.stringify(dades)
+	localStorage.setItem('tetris_Dades', tetris_Dades)
 }
