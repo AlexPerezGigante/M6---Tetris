@@ -2,8 +2,8 @@ import { panel } from "../panel"
 export const jugar = {
     template: //html
     `
-    <div id="juego">
-				<div class="row">
+    <div class="mt-5 col-8 mx-auto" id="juego">
+				<div class="row bg-dark border border-light p-5">
 					<!-- Panel izquierda -->
 					<div
 						class="col-4 d-flex flex-column justify-content-end align-items-center p-5"
@@ -15,7 +15,7 @@ export const jugar = {
 					</div>
 					<!-- Panel central -->
 					<div class="col-4 d-flex justify-content-center">
-						<div id="panel" class="p-5">
+						<div id="panel" class=" p-0 m-0 row">
 							
 						</div>
 					</div>
