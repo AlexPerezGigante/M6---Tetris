@@ -99,7 +99,7 @@ function pintaTabla(partida) {
 }
 function pintaDatos(partida){
 	// Con el bucle for each añadimos los datos del array de objetos
-	let tabla 
+	let tabla =''
     partida.forEach((element) => { 
 		tabla += `<tr>
                     <td><img src="${element.avatar}" alt="avatar" /></td>
