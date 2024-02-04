@@ -90,5 +90,7 @@ export const jugar = {
     `,
 	script:() => {
 		panel.pintaPanel()
+		panel.nuevaPieza = panel.crearNuevaPieza()
+		console.log(panel.nuevaPieza)
 	}
 }
