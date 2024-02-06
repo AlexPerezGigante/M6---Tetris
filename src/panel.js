@@ -66,31 +66,33 @@ export const panel = {
         const modelo = pieza.martiz
         const x = pieza.x
         const y = pieza.y
-        const longitud = modelo.length
-        const panel = panel.matriz
-        let indice = 0
-        let array 
-
-        panel.forEach((element, index) => {
+        // const longitud = modelo.lenght
+        const panelTablero = panel.matriz
+        let indiceY = 0
+        let indiceX = 0
+        let array =''
+        console.log(modelo)
+        panelTablero.forEach((element, index) => {
             if(index==y){
-                let elemento = 0
-                
-                element.forEach(( index) => {
-                    if(index==x){
-                        array[index]=modelo[indice][elemento]
-                        if(modelo[indice][elemento].lenght>elemento){
-                            elemento = elemento + 1
+                element.forEach((index) => {
+                        if(index==x){
+                            // element[y][index]=modelo[indiceY][indiceX]
+                        }else{
+                            // element[y][index]=element[y][index]
                         }
-                    }
+                        if(indiceX<modelo[indiceY].lenght){
+                            indiceX++
+                        }
+                        array+=element
                 });
-                if(y<element.lenght){
-                    y = y + 1
-                }
             }else{
                 array+=element
             }
+            // if(indiceY<modelo[0].lenght){
+                // indiceY++
+            // }
         });
-        console.log()
+        console.log(array)
 
         let html = ''
 
