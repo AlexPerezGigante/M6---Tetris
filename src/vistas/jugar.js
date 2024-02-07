@@ -89,8 +89,22 @@ export const jugar = {
 			</div>
     `,
 	script:() => {
+		panel.constrolTeclas()
+
 		panel.pintaPanel()
+
 		panel.nuevaPieza = panel.crearNuevaPieza()
+
 		panel.insertarPieza(panel.nuevaPieza)
+
+		panel.pintaPanel()
+
+		
+		panel.pintaPanel()
+
+		
+
+
+
 	}
 }

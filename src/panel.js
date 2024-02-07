@@ -34,8 +34,12 @@ export const panel = {
             if(index!=0&&index!=21){
                 element.forEach((celda, index) => {
                     if(index!=0&&index!=11){
-                        // console.log(celda)
-                        html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1""></div>'
+                        //  console.log(celda)
+                        if(celda==1){
+                            html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1 bg-danger"></div>'
+                        }else{
+                        html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1"></div>'
+                        }
                     }
                 });
             }
@@ -63,58 +67,76 @@ export const panel = {
     ]
     ,
     insertarPieza: (pieza)  => {
-        const modelo = pieza.martiz
         const x = pieza.x
         const y = pieza.y
-        // const longitud = modelo.lenght
-        const panelTablero = panel.matriz
-        let indiceY = 0
-        let indiceX = 0
-        let array =''
-        console.log(modelo)
-        panelTablero.forEach((element, index) => {
-            if(index==y){
-                element.forEach((index) => {
-                        if(index==x){
-                            // element[y][index]=modelo[indiceY][indiceX]
-                        }else{
-                            // element[y][index]=element[y][index]
-                        }
-                        if(indiceX<modelo[indiceY].lenght){
-                            indiceX++
-                        }
-                        array+=element
-                });
-            }else{
-                array+=element
+        console.log(pieza)
+        const indiceY = pieza.altura
+        const indiceX = pieza.longitud
+        let piezaY = 0
+        let piezaX = 0
+        for(let i=y;i<=y+(indiceY-1);i++){
+            for(let longitud=x;longitud<=x+(indiceX-1);longitud++){
+                panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
+                piezaX=piezaX+1
             }
-            // if(indiceY<modelo[0].lenght){
-                // indiceY++
-            // }
-        });
-        console.log(array)
+            piezaX=0;
+            piezaY=piezaY+1
+            
+        }
 
-        let html = ''
+        console.log(panel.matriz)
+    },
 
-        panel.forEach((element, index) => {
-            html+='<div class="d-flex m-0 col-12">'
-            if(index!=0&&index!=21){
-                element.forEach((celda, index) => {
-                    if(index!=0&&index!=11){
-                        if(index==x){
-                            html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1 bg-danger "></div>'
-                        }else{
-                            html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1"></div>'
-                        }
-                        // console.log(celda) 
-                    }
-                });
+    borrarPieza:(pieza) =>{
+        const x = pieza.x
+        const y = pieza.y
+        const indiceY = pieza.altura
+        const indiceX = pieza.longitud
+        let piezaY = 0
+        let piezaX = 0
+        for(let i=y;i<=y+(indiceY-1);i++){
+            for(let longitud=x;longitud<=x+(indiceX-1);longitud++){
+                if(pieza.matriz[piezaY][piezaX]==1){
+                    panel.matriz[i][longitud]=0
+                }
+                piezaX=piezaX+1
             }
-            // console.log('')
-            html+='</div>'            
-        });
-        document.querySelector('#panel').innerHTML = html
+            piezaX=0;
+            piezaY=piezaY+1
+        }
+
+        console.log(panel.matriz)
+    },
+
+    constrolTeclas:()=>{
+        document.addEventListener("keydown", function(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    panel.moverIzq()
+                break;
+                case 'ArrowUp':
+                    nuevaPieza.girar()
+                break;
+                case 'ArrowRight':
+                    panel.moverDra()
+                break;
+                case 'ArrowDown':
+                    panel.bajar()
+                break;
+            
+                default:
+                    // console.log(event.key)
+                    break;
+            }
+        })
+    },
+
+    moverIzq:() =>{
+        panel.borrarPieza(panel.nuevaPieza)
+        panel.nuevaPieza.x--
+        panel.insertarPieza(panel.nuevaPieza)
+        panel.pintaPanel()
     }
+   
     
-    // let prueba = new ModeloPieza(4,3)
 }
