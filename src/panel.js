@@ -74,8 +74,8 @@ export const panel = {
         const indiceX = pieza.longitud
         let piezaY = 0
         let piezaX = 0
-        for(let i=y;i<=y+(indiceY-1);i++){
-            for(let longitud=x;longitud<=x+(indiceX-1);longitud++){
+        for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
+            for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
                 panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
                 piezaX=piezaX+1
             }
@@ -84,7 +84,7 @@ export const panel = {
             
         }
 
-        console.log(panel.matriz)
+        // console.log(panel.matriz)
     },
 
     borrarPieza:(pieza) =>{
@@ -94,8 +94,8 @@ export const panel = {
         const indiceX = pieza.longitud
         let piezaY = 0
         let piezaX = 0
-        for(let i=y;i<=y+(indiceY-1);i++){
-            for(let longitud=x;longitud<=x+(indiceX-1);longitud++){
+        for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
+            for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
                 if(pieza.matriz[piezaY][piezaX]==1){
                     panel.matriz[i][longitud]=0
                 }
@@ -105,7 +105,7 @@ export const panel = {
             piezaY=piezaY+1
         }
 
-        console.log(panel.matriz)
+        // console.log(panel.matriz)
     },
 
     constrolTeclas:()=>{
@@ -132,10 +132,35 @@ export const panel = {
     },
 
     moverIzq:() =>{
+        if(panel.nuevaPieza.x>1){
+            panel.borrarPieza(panel.nuevaPieza)
+            panel.nuevaPieza.x=panel.nuevaPieza.x-1
+            console.log(panel.nuevaPieza.x)
+            panel.insertarPieza(panel.nuevaPieza)
+            panel.pintaPanel()
+            panel.constrolTeclas()
+        }
+        
+    },
+    moverDra:() =>{
+        if(panel.nuevaPieza.x+panel.nuevaPieza.longitud<=10){
         panel.borrarPieza(panel.nuevaPieza)
-        panel.nuevaPieza.x--
+        panel.nuevaPieza.x=panel.nuevaPieza.x+1
+        console.log(panel.nuevaPieza.x)
         panel.insertarPieza(panel.nuevaPieza)
         panel.pintaPanel()
+        panel.constrolTeclas()
+        }
+    },
+    bajar:() =>{
+        if(panel.nuevaPieza.y+panel.nuevaPieza.altura<=20){
+            panel.borrarPieza(panel.nuevaPieza)
+            panel.nuevaPieza.y=panel.nuevaPieza.y+1
+            
+            panel.insertarPieza(panel.nuevaPieza)
+            panel.pintaPanel()
+            panel.constrolTeclas()
+            }
     }
    
     
