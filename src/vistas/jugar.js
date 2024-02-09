@@ -89,7 +89,7 @@ export const jugar = {
 			</div>
     `,
 	script:() => {
-		panel.constrolTeclas()
+		panel.controlTeclas()
 
 		panel.pintaPanel()
 

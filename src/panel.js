@@ -88,8 +88,6 @@ export const panel = {
     },
 
     borrarPieza:(pieza) =>{
-        const x = pieza.x
-        const y = pieza.y
         const indiceY = pieza.altura
         const indiceX = pieza.longitud
         let piezaY = 0
@@ -108,7 +106,7 @@ export const panel = {
         // console.log(panel.matriz)
     },
 
-    constrolTeclas:()=>{
+    controlTeclas:()=>{
         document.addEventListener("keydown", function(event) {
             switch (event.key) {
                 case 'ArrowLeft':
@@ -156,13 +154,64 @@ export const panel = {
         }
     },
     bajar:() =>{
-        if(panel.nuevaPieza.y+panel.nuevaPieza.altura<=20){
+        // if(panel.nuevaPieza.y+panel.nuevaPieza.altura<=20){
             panel.borrarPieza(panel.nuevaPieza)
-            panel.nuevaPieza.y=panel.nuevaPieza.y+1
+            // panel.nuevaPieza.y=panel.nuevaPieza.y+1
+            const indiceY = panel.nuevaPieza.altura
+            const indiceX = panel.nuevaPieza.longitud
+            let piezaY = 0
+            let piezaX = 0
+            let ocupado = 0
+            // let i=panel.nuevaPieza.y+indiceY-1
             
+            // for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
+            //     console.log[piezaX]
+
+            //     if(panel.matriz[i][longitud]==1){
+            //         ocupado++
+            //     }
+            // }
+            for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
+                piezaY=0;
+                for(let index=panel.nuevaPieza.y;index<=panel.nuevaPieza.y+(indiceY-1);index++){
+                    // if(panel.nuevaPieza.matriz[piezaY][piezaX]==1){
+                    //     piezaY=piezaY+1;
+                    //     panel.matriz[index][longitud]=0
+                    // }
+                    console.log(panel.nuevaPieza.altura-1)
+                    if(panel.nuevaPieza.matriz[piezaY][piezaX]==1){
+                        if(piezaY==panel.nuevaPieza.altura-1){
+                            if((panel.matriz[index+piezaY][longitud])==1){
+                                ocupado++
+                            }
+                            console.log(piezaY)
+                        }
+                        piezaY=piezaY+1;
+                        
+
+                    }else{
+                        // console.log(panel.matriz[panel.nuevaPieza.Y+piezaY+1])
+                        if((panel.matriz[index+piezaY][longitud])==1){
+                            ocupado++
+                        }
+                    }
+                    
+                }
+                piezaX=piezaX+1
+            }
+            // }
+            console.log(ocupado)
+            if(ocupado>0){
+                // panel.nuevaPieza.y=panel.nuevaPieza.y-1
+            }else{
+                panel.nuevaPieza.y=panel.nuevaPieza.y+1
+            }
+
             panel.insertarPieza(panel.nuevaPieza)
             panel.pintaPanel()
-            }
+            
+            
+            
     },
 
     iniciarMovimiento:() =>{
