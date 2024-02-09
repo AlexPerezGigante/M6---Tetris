@@ -115,7 +115,10 @@ export const panel = {
                     panel.moverIzq()
                 break;
                 case 'ArrowUp':
-                    nuevaPieza.girar()
+                    panel.borrarPieza(panel.nuevaPieza)
+                    panel.nuevaPieza.girar()
+                    panel.insertarPieza(panel.nuevaPieza)
+                    panel.pintaPanel()
                 break;
                 case 'ArrowRight':
                     panel.moverDra()
@@ -138,7 +141,7 @@ export const panel = {
             console.log(panel.nuevaPieza.x)
             panel.insertarPieza(panel.nuevaPieza)
             panel.pintaPanel()
-            panel.constrolTeclas()
+            
         }
         
     },
@@ -149,7 +152,7 @@ export const panel = {
         console.log(panel.nuevaPieza.x)
         panel.insertarPieza(panel.nuevaPieza)
         panel.pintaPanel()
-        panel.constrolTeclas()
+       
         }
     },
     bajar:() =>{
@@ -159,9 +162,12 @@ export const panel = {
             
             panel.insertarPieza(panel.nuevaPieza)
             panel.pintaPanel()
-            panel.constrolTeclas()
             }
+    },
+
+    iniciarMovimiento:() =>{
+        setInterval(panel.bajar, 1000)
     }
-   
+    
     
 }

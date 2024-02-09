@@ -99,12 +99,7 @@ export const jugar = {
 
 		panel.pintaPanel()
 
-		
-		panel.pintaPanel()
-
-		
-
-
+		panel.iniciarMovimiento()
 
 	}
 }
