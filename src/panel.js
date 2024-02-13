@@ -108,6 +108,7 @@ export const panel = {
 
     controlTeclas:()=>{
         document.addEventListener("keydown", function(event) {
+            event.preventDefault()
             switch (event.key) {
                 case 'ArrowLeft':
                     panel.moverIzq()
@@ -204,7 +205,8 @@ export const panel = {
             // }
             console.log(ocupado)
             if(ocupado>0){
-                panel.nuevaPieza = panel.crearNuevaPieza()
+                const piezaNueva = panel.crearNuevaPieza()
+                panel.nuevaPieza = piezaNueva
                 // panel.nuevaPieza.y=panel.nuevaPieza.y-1
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1

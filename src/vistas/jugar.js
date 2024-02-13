@@ -101,5 +101,7 @@ export const jugar = {
 
 		panel.iniciarMovimiento()
 
+		
+
 	}
 }
