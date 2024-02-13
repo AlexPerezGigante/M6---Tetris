@@ -69,7 +69,7 @@ export const panel = {
     insertarPieza: (pieza)  => {
         const x = pieza.x
         const y = pieza.y
-        console.log(pieza)
+        // console.log(pieza)
         const indiceY = pieza.altura
         const indiceX = pieza.longitud
         let piezaY = 0
@@ -178,17 +178,19 @@ export const panel = {
                     //     piezaY=piezaY+1;
                     //     panel.matriz[index][longitud]=0
                     // }
-                    console.log(panel.nuevaPieza.altura-1)
+                    // console.log(panel.nuevaPieza.altura-1)
                     if(panel.nuevaPieza.matriz[piezaY][piezaX]==1){
-                        if(piezaY==panel.nuevaPieza.altura-1){
-                            if((panel.matriz[index+piezaY][longitud])==1){
+                       
+                        // if(piezaY==panel.nuevaPieza.altura-1){
+                            if((panel.matriz[index+1][longitud])==1){
                                 ocupado++
                             }
-                            console.log(piezaY)
-                        }
-                        piezaY=piezaY+1;
-                        
+                            
 
+                        // }
+                        piezaY=piezaY+1;
+                        console.log(index+1, longitud, piezaY, index, panel.nuevaPieza.altura-1, piezaX)
+                        console.log(panel.matriz[index+1][longitud])
                     }else{
                         // console.log(panel.matriz[panel.nuevaPieza.Y+piezaY+1])
                         if((panel.matriz[index+piezaY][longitud])==1){
@@ -202,6 +204,7 @@ export const panel = {
             // }
             console.log(ocupado)
             if(ocupado>0){
+                panel.nuevaPieza = panel.crearNuevaPieza()
                 // panel.nuevaPieza.y=panel.nuevaPieza.y-1
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1
