@@ -50,7 +50,7 @@ export const panel = {
         
     },
     crearNuevaPieza: ()  => {
-        const modelo =  Math.floor(Math.random() * 6);
+        const modelo =  Math.floor(Math.random() * 7);
         const matriz = models[modelo][0]
         const longitud = matriz[0].length
 
@@ -76,7 +76,9 @@ export const panel = {
         let piezaX = 0
         for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
             for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
-                panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
+                if(pieza.matriz[piezaY][piezaX]==1){
+                    panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
+                }     
                 piezaX=piezaX+1
             }
             piezaX=0;
@@ -151,72 +153,47 @@ export const panel = {
         console.log(panel.nuevaPieza.x)
         panel.insertarPieza(panel.nuevaPieza)
         panel.pintaPanel()
-       
         }
     },
     bajar:() =>{
         // if(panel.nuevaPieza.y+panel.nuevaPieza.altura<=20){
-            panel.borrarPieza(panel.nuevaPieza)
-            // panel.nuevaPieza.y=panel.nuevaPieza.y+1
+            if(panel.nuevaPieza.y>0){
+                panel.borrarPieza(panel.nuevaPieza)
+            }
             const indiceY = panel.nuevaPieza.altura
             const indiceX = panel.nuevaPieza.longitud
             let piezaY = 0
             let piezaX = 0
             let ocupado = 0
-            // let i=panel.nuevaPieza.y+indiceY-1
-            
-            // for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
-            //     console.log[piezaX]
-
-            //     if(panel.matriz[i][longitud]==1){
-            //         ocupado++
-            //     }
-            // }
             for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
                 piezaY=0;
                 for(let index=panel.nuevaPieza.y;index<=panel.nuevaPieza.y+(indiceY-1);index++){
-                    // if(panel.nuevaPieza.matriz[piezaY][piezaX]==1){
-                    //     piezaY=piezaY+1;
-                    //     panel.matriz[index][longitud]=0
-                    // }
-                    // console.log(panel.nuevaPieza.altura-1)
                     if(panel.nuevaPieza.matriz[piezaY][piezaX]==1){
-                       
-                        // if(piezaY==panel.nuevaPieza.altura-1){
-                            if((panel.matriz[index+1][longitud])==1){
-                                ocupado++
-                            }
-                            
-
-                        // }
-                        piezaY=piezaY+1;
-                        console.log(index+1, longitud, piezaY, index, panel.nuevaPieza.altura-1, piezaX)
-                        console.log(panel.matriz[index+1][longitud])
-                    }else{
-                        // console.log(panel.matriz[panel.nuevaPieza.Y+piezaY+1])
-                        if((panel.matriz[index+piezaY][longitud])==1){
+                        if((panel.matriz[index+1][longitud])==1){
                             ocupado++
+                        }else{
+                            piezaY=piezaY+1;
+                        }
+                    }else{
+                        if((panel.matriz[index][longitud])==1){
+                            ocupado++
+                        }else{
+                            piezaY++;
                         }
                     }
-                    
                 }
                 piezaX=piezaX+1
             }
-            // }
-            console.log(ocupado)
             if(ocupado>0){
+                panel.insertarPieza(panel.nuevaPieza)
                 const piezaNueva = panel.crearNuevaPieza()
                 panel.nuevaPieza = piezaNueva
-                // panel.nuevaPieza.y=panel.nuevaPieza.y-1
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1
             }
 
             panel.insertarPieza(panel.nuevaPieza)
-            panel.pintaPanel()
-            
-            
-            
+            panel.pintaPanel()      
     },
 
     iniciarMovimiento:() =>{
