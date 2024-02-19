@@ -24,8 +24,15 @@ export const panel = {
         [1,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1]
-    ]
-    ,
+    ],
+    bg: [
+        ["bg-primary"],
+        ["bg-danger"],
+        ["bg-success"],
+        ["bg-warning"],
+        ["bg-light"],
+        [""]
+    ],
     pintaPanel: () => {
         let html = ''
 
