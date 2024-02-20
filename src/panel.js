@@ -1,5 +1,7 @@
 import { ModeloPieza } from "./clase";
 import { models } from "./models";
+let puntos = 0
+let movimiento = ''
 export const panel = {
     matriz: [
         [1,1,1,1,1,1,1,1,1,1,1,1],
@@ -31,7 +33,8 @@ export const panel = {
         ["bg-success"],
         ["bg-warning"],
         ["bg-light"],
-        [""]
+        ["bg-info"],
+        ["bg-secondary"]
     ],
     pintaPanel: () => {
         let html = ''
@@ -42,8 +45,8 @@ export const panel = {
                 element.forEach((celda, index) => {
                     if(index!=0&&index!=11){
                         //  console.log(celda)
-                        if(celda==1){
-                            html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1 bg-danger"></div>'
+                        if(celda>=1){
+                            html+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1 ${panel.bg[celda-1]}"></div>`
                         }else{
                         html+='<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1"></div>'
                         }
@@ -83,7 +86,7 @@ export const panel = {
         let piezaX = 0
         for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
             for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
-                if(pieza.matriz[piezaY][piezaX]==1){
+                if(pieza.matriz[piezaY][piezaX]>=1){
                     panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
                 }     
                 piezaX=piezaX+1
@@ -103,7 +106,7 @@ export const panel = {
         let piezaX = 0
         for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
             for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
-                if(pieza.matriz[piezaY][piezaX]==1){
+                if(pieza.matriz[piezaY][piezaX]>=1){
                     panel.matriz[i][longitud]=0
                 }
                 piezaX=piezaX+1
@@ -127,6 +130,8 @@ export const panel = {
                     panel.nuevaPieza.girar()
                     panel.insertarPieza(panel.nuevaPieza)
                     panel.pintaPanel()
+                    puntos=puntos+20
+                    panel.mostrarPuntos()
                 break;
                 case 'ArrowRight':
                     panel.moverDra()
@@ -149,6 +154,8 @@ export const panel = {
             console.log(panel.nuevaPieza.x)
             panel.insertarPieza(panel.nuevaPieza)
             panel.pintaPanel()
+            puntos=puntos+10
+            panel.mostrarPuntos()
             
         }
         
@@ -160,6 +167,8 @@ export const panel = {
         console.log(panel.nuevaPieza.x)
         panel.insertarPieza(panel.nuevaPieza)
         panel.pintaPanel()
+        puntos=puntos+10
+        panel.mostrarPuntos()
         }
     },
     bajar:() =>{
@@ -175,18 +184,27 @@ export const panel = {
             for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
                 piezaY=0;
                 for(let index=panel.nuevaPieza.y;index<=panel.nuevaPieza.y+(indiceY-1);index++){
-                    if(panel.nuevaPieza.matriz[piezaY][piezaX]==1){
-                        if((panel.matriz[index+1][longitud])==1){
+                    if(panel.nuevaPieza.matriz[piezaY][piezaX]>=1){
+                        if((panel.matriz[index+1][longitud])>=1){
                             ocupado++
                         }else{
                             piezaY=piezaY+1;
                         }
                     }else{
-                        if((panel.matriz[index][longitud])==1){
-                            ocupado++
-                        }else{
-                            piezaY++;
-                        }
+                        // if(panel.nuevaPieza.matriz[piezaY][piezaX]==0 && panel.nuevaPieza.matriz[piezaY+1][piezaX]==0){
+                        //     if((panel.matriz[index][longitud])>=1){  
+                        //         ocupado++
+                        //     }else{
+                        //         piezaY++;
+                        //     }
+                        // }else{
+                            if((panel.matriz[index][longitud])>=1){  
+                                ocupado++
+                            }else{
+                                piezaY++;
+                            }
+                        // }
+                        
                     }
                 }
                 piezaX=piezaX+1
@@ -195,17 +213,30 @@ export const panel = {
                 panel.insertarPieza(panel.nuevaPieza)
                 const piezaNueva = panel.crearNuevaPieza()
                 panel.nuevaPieza = piezaNueva
+                puntos=puntos+50
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1
+                puntos=puntos+10
             }
 
             panel.insertarPieza(panel.nuevaPieza)
-            panel.pintaPanel()      
+            panel.pintaPanel()
+            panel.mostrarPuntos()      
+            
+    },
+
+    mostrarPuntos:()=>{
+        document.querySelector('#puntos').innerHTML = puntos
     },
 
     iniciarMovimiento:() =>{
-        setInterval(panel.bajar, 1000)
-    }
+        movimiento = setInterval(panel.bajar, 1000)
+    },
+    
+    pararMovimiento:()=>{
+        clearInterval(movimiento)
+    },
+
     
     
 }

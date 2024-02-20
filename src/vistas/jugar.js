@@ -8,10 +8,10 @@ export const jugar = {
 					<div
 						class="col-4 d-flex flex-column justify-content-end align-items-center p-5"
 					>
-						<h4>Nivel: <span>2</span></h4>
-						<h4>Tiempo: <span>5:22</span></h4>
-						<h4>Lineas: <span>2</span></h4>
-						<h4>Puntos: <span>211122</span></h4>
+						<h4>Nivel: <span>1</span></h4>
+						<h4>Tiempo: <span>00:00</span></h4>
+						<h4>Lineas: <span>n/d</span></h4>
+						<h4>Puntos: <span id="puntos">0</span></h4>
 					</div>
 					<!-- Panel central -->
 					<div class="col-4 d-flex justify-content-center">
@@ -84,6 +84,18 @@ export const jugar = {
 								</div>
 							</div>
 						</div>
+
+						<div>
+							<button class=" btn btn-success mt-5 " id="guardar">Guardar Partida</button>
+							<div id="formGuardar" class="d-none">
+									<div class="mb-3">
+										<label for="nombre" class="form-label">Nombre</label>
+										<input type="text" class="form-control" id="nombre">
+										<label for="enviar" class="form-label"></label>
+										<input type="submit" class="form-control btn btn-primary " id="enviar">
+									</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -101,7 +113,21 @@ export const jugar = {
 
 		panel.iniciarMovimiento()
 
-		
+		const botonGuardar = document.querySelector('#guardar')
+		botonGuardar.addEventListener('click', guardarPartida)
 
+		function guardarPartida(){
+			panel.pararMovimiento()
+			document.querySelector('#formGuardar').classList.remove('d-none')
+			botonGuardar.classList.add('d-none')
+
+			const botonEnviar = document.querySelector('#enviar')
+			botonEnviar.addEventListener('submit', enviarDatos)
+		}
+
+		function enviarDatos(){
+			
+		}
+		
 	}
 }
