@@ -122,11 +122,12 @@ export const jugar = {
 			botonGuardar.classList.add('d-none')
 
 			const botonEnviar = document.querySelector('#enviar')
-			botonEnviar.addEventListener('submit', enviarDatos)
-		}
+			botonEnviar.addEventListener('submit', () => {
+				const nombre = document.querySelector('#nombre').value
+				const puntos = document.querySelector('#puntos').value
+				
 
-		function enviarDatos(){
-			
+			})
 		}
 		
 	}
