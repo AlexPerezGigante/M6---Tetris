@@ -1,6 +1,5 @@
 import { ModeloPieza } from "./clase";
 import { models } from "./models";
-let puntos = 0
 let movimiento = ''
 export const panel = {
     matriz: [
@@ -36,6 +35,7 @@ export const panel = {
         ["bg-info"],
         ["bg-secondary"]
     ],
+    puntos: 0,
     pintaPanel: () => {
         let html = ''
 
@@ -119,31 +119,40 @@ export const panel = {
     },
 
     controlTeclas:()=>{
-        document.addEventListener("keydown", function(event) {
-            event.preventDefault()
+        document.addEventListener("keydown", function(event){
             switch (event.key) {
                 case 'ArrowLeft':
+                    event.preventDefault()
                     panel.moverIzq()
+                    return false;
                 break;
                 case 'ArrowUp':
+                    event.preventDefault()
                     panel.borrarPieza(panel.nuevaPieza)
                     panel.nuevaPieza.girar()
                     panel.insertarPieza(panel.nuevaPieza)
                     panel.pintaPanel()
-                    puntos=puntos+20
+                    panel.puntos=panel.puntos+20
                     panel.mostrarPuntos()
+                    return false;
                 break;
                 case 'ArrowRight':
+                    event.preventDefault()
                     panel.moverDra()
+                    return false;
                 break;
                 case 'ArrowDown':
+                    event.preventDefault()
                     panel.bajar()
+                    return false;
                 break;
             
                 default:
                     // console.log(event.key)
-                    break;
+                    
+                break;
             }
+            
         })
     },
 
@@ -154,7 +163,7 @@ export const panel = {
             console.log(panel.nuevaPieza.x)
             panel.insertarPieza(panel.nuevaPieza)
             panel.pintaPanel()
-            puntos=puntos+10
+            panel.puntos=panel.puntos+10
             panel.mostrarPuntos()
             
         }
@@ -167,7 +176,7 @@ export const panel = {
         console.log(panel.nuevaPieza.x)
         panel.insertarPieza(panel.nuevaPieza)
         panel.pintaPanel()
-        puntos=puntos+10
+        panel.puntos=panel.puntos+10
         panel.mostrarPuntos()
         }
     },
@@ -213,10 +222,10 @@ export const panel = {
                 panel.insertarPieza(panel.nuevaPieza)
                 const piezaNueva = panel.crearNuevaPieza()
                 panel.nuevaPieza = piezaNueva
-                puntos=puntos+50
+                panel.puntos=panel.puntos+50
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1
-                puntos=puntos+10
+                panel.puntos=panel.puntos+10
             }
 
             panel.insertarPieza(panel.nuevaPieza)
@@ -226,7 +235,7 @@ export const panel = {
     },
 
     mostrarPuntos:()=>{
-        document.querySelector('#puntos').innerHTML = puntos
+        document.querySelector('#puntos').innerHTML = panel.puntos
     },
 
     iniciarMovimiento:() =>{
@@ -235,6 +244,7 @@ export const panel = {
     
     pararMovimiento:()=>{
         clearInterval(movimiento)
+
     },
 
     

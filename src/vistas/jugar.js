@@ -1,4 +1,5 @@
 import { panel } from "../panel"
+import { modificaNick, modificaData, modificaData2, insertaNuevaPartida } from "../operaciones"
 export const jugar = {
     template: //html
     `
@@ -122,11 +123,20 @@ export const jugar = {
 			botonGuardar.classList.add('d-none')
 
 			const botonEnviar = document.querySelector('#enviar')
-			botonEnviar.addEventListener('submit', () => {
-				const nombre = document.querySelector('#nombre').value
-				const puntos = document.querySelector('#puntos').value
-				
+			botonEnviar.addEventListener('click', () => {
+				event.preventDefault()
+				const nombre = document.querySelector('#nombre').value.toUpperCase()
+				const puntos = panel.puntos
+				console.log(nombre, puntos)
+				const fecha = new Date()
 
+				const partida = {
+					avatar : 'https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg',
+					nick : modificaNick(nombre) ,
+					puntos : puntos,
+					fecha : modificaData(modificaData2(fecha))
+				}
+				insertaNuevaPartida(partida)
 			})
 		}
 		

@@ -119,7 +119,7 @@ function pintaDatos(partida){
 // Llamamos a las funciones que sacan las tablas y también llamamos a la que nos pide si queremos añadir una nueva o no
 pintaRanking();
 pintaTabla();
-pintaDatosPartida(datosPartida);
+// pintaDatosPartida(datosPartida);
 pintaDatos(partidas)
 
 
