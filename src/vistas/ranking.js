@@ -99,7 +99,7 @@ function pintaTabla(partida) {
 }
 function pintaDatos(partida){
 	// Con el bucle for each añadimos los datos del array de objetos
-	let tabla 
+	let tabla =''
     partida.forEach((element) => { 
 		tabla += `<tr>
                     <td><img src="${element.avatar}" alt="avatar" /></td>
@@ -119,7 +119,7 @@ function pintaDatos(partida){
 // Llamamos a las funciones que sacan las tablas y también llamamos a la que nos pide si queremos añadir una nueva o no
 pintaRanking();
 pintaTabla();
-pintaDatosPartida(datosPartida);
+// pintaDatosPartida(datosPartida);
 pintaDatos(partidas)
 
 

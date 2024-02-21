@@ -4,7 +4,6 @@ export function modificaNick(nick){
 		return(null)
 	}
 	else{
-        
         let nuevoNick=nick.trim().replaceAll(" ","_")
 		nuevoNick=nuevoNick.toUpperCase()
 		return(nuevoNick)
@@ -23,8 +22,8 @@ export function modificaData(data){
 
 	// “27 enero 2022 - 18:05:12”
 	console.log("modificaData")
-	const mes=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]
-	const fecha=dia + " " + mes[fechaStr[1]-1] + " " + "20"+fechaStr[0] + " - " + fechaSplit[1]
+	const mes=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"]
+	const fecha=dia + " " + mes[fechaStr[1]-1] + " " + "20"+fechaStr[0]  + " - " + fechaSplit[1]
 	return(fecha)
 }
 export function modificaData2(objectedata){
@@ -64,19 +63,19 @@ export const partidas = [
         avatar: "https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg",
         nick: "ANDER",
         puntos: 10,
-        fecha: "13 ABRIL 2023",
+        fecha: "13 ABRIL 2023 - 20:55:12",
     },
     {
         avatar: "https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg",
         nick: "ANDER",
         puntos: 600,
-        fecha: "13 FEBRERO 2023",
+        fecha: "13 FEBRERO 2023 - 02:05:33",
     },
     {
         avatar: "https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg",
         nick: "MIKE",
         puntos: 888,
-        fecha: "1 ENERO 2023",
+        fecha: "1 ENERO 2023 - 10:30:45",
     },
 ];
 // Objeto con un registro nuevo
@@ -146,6 +145,7 @@ export function orden(campo, tipo){
         case 'fecha':
             array = modificaData3('up')
             array = array.sort((a,b)=>a.getTime()-b.getTime());
+            console.log(array)
             const arrayFecha = []
             const arrayOrdenado = []
 
@@ -154,9 +154,6 @@ export function orden(campo, tipo){
                 // console.log('element: ', dateString.slice(0, dateString.length - 1))
                 let dateTransformado = modificaData2(element)
                 dateTransformado = modificaData(dateTransformado)
-                dateTransformado = dateTransformado.split('-')[0].trim()
-                dateTransformado = dateTransformado.split(' ')
-                dateTransformado = '' + dateTransformado[0] + ' ' + dateTransformado[1].toUpperCase() + ' ' + dateTransformado[2]
                 arrayFecha.push(dateTransformado)
                 
             });
@@ -187,17 +184,22 @@ export function orden(campo, tipo){
 }
 
 export function modificaData3(type){
-    // Conseguimos un array solo de fechas 1 ENERO 2023
-    const data =  partidas.map((element) =>{
+    // Conseguimos un array solo de fechas 1 ENERO 2023 - 18:05:12
+    const data = partidas.map((element) =>{
         return element.fecha
     })
     console.log('data: ',data)
     const arrayFecha=[]
     data.forEach(element => {
-        const division = element.split(' ')
-        const dia = division[0]
-        const mes = division[1]
-        const year = division[2]
+        let division  = element.split('-')
+        
+        const hora = division[1].trim()
+        console.log(hora)
+        const fechaDiv = division[0].split(' ')
+
+        const dia = fechaDiv[0]
+        const mes = fechaDiv[1]
+        const year = fechaDiv[2]
 
         const arrayMes=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"]
         let diaMes=''
@@ -215,10 +217,10 @@ export function modificaData3(type){
                     fecha += diaMes + '-'
                 }
                 if(dia<10){
-                    fecha += '0' + dia + 'T00:00:00'
+                    fecha += '0' + dia + 'T' + hora
                 }
                 else{
-                    fecha += dia + 'T00:00:00'
+                    fecha += dia + 'T' + hora
                 }
                 const fechaDate=new Date(fecha)
                 arrayFecha.push(fechaDate)
