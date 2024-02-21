@@ -11,7 +11,7 @@ export const jugar = {
 					>
 						<h4>Nivel: <span>1</span></h4>
 						<h4>Tiempo: <span>00:00</span></h4>
-						<h4>Lineas: <span>n/d</span></h4>
+						<h4>Lineas: <span id="lineas">0</span></h4>
 						<h4>Puntos: <span id="puntos">0</span></h4>
 					</div>
 					<!-- Panel central -->
@@ -24,48 +24,50 @@ export const jugar = {
 					<div
 						class="col-4 d-flex flex-column justify-content-start align-items-center p-5"
 					>
-						<div id="piezaSiguiente">
+						<div>
 							<h4>Pieza siguiente:</h4>
-							<div class="piezaSiguiente m-2">
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-dark border-secondary">x</div>
+							<div id="piezaSiguiente">
+								<div class="piezaSiguiente m-2">
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-dark border-secondary">x</div>
+									</div>
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-dark border-secondary">x</div>
+									</div>
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+									</div>
 								</div>
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-dark border-secondary">x</div>
+								<div class="piezaSiguiente m-2">
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-dark border-secondary">x</div>
+									</div>
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-dark border-secondary">x</div>
+									</div>
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+									</div>
 								</div>
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-								</div>
-							</div>
-							<div class="piezaSiguiente m-2">
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-dark border-secondary">x</div>
-								</div>
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-dark border-secondary">x</div>
-								</div>
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-								</div>
-							</div>
-							<div class="piezaSiguiente m-2">
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-dark border-secondary">x</div>
-								</div>
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-dark border-secondary">x</div>
-								</div>
-								<div class="fila d-flex justify-content-center">
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
-									<div class="celda bg-primary bg-gradient border-dark">x</div>
+								<div class="piezaSiguiente m-2">
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-dark border-secondary">x</div>
+									</div>
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-dark border-secondary">x</div>
+									</div>
+									<div class="fila d-flex justify-content-center">
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+										<div class="celda bg-primary bg-gradient border-dark">x</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -108,10 +110,15 @@ export const jugar = {
 
 		panel.nuevaPieza = panel.crearNuevaPieza()
 
+		panel.piezasSiguientes.push(panel.crearNuevaPieza())
+		panel.piezasSiguientes.push(panel.crearNuevaPieza())
+		panel.piezasSiguientes.push(panel.crearNuevaPieza())
+
+
 		panel.insertarPieza(panel.nuevaPieza)
 
 		panel.pintaPanel()
-
+		panel.mostrarPiezas()
 		panel.iniciarMovimiento()
 
 		const botonGuardar = document.querySelector('#guardar')

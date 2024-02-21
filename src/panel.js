@@ -36,6 +36,8 @@ export const panel = {
         ["bg-secondary"]
     ],
     puntos: 0,
+    lineas: 0,
+    piezasSiguientes: [],
     pintaPanel: () => {
         let html = ''
 
@@ -149,12 +151,7 @@ export const panel = {
                 break;
                 case 'ArrowUp':
                     event.preventDefault()
-                    panel.borrarPieza(panel.nuevaPieza)
-                    panel.nuevaPieza.girar()
-                    panel.insertarPieza(panel.nuevaPieza)
-                    panel.pintaPanel()
-                    panel.puntos=panel.puntos+20
-                    panel.mostrarPuntos()
+                    panel.girar()
                     return false;
                 break;
                 case 'ArrowRight':
@@ -178,79 +175,45 @@ export const panel = {
     },
 
     moverIzq:() =>{
-        if(panel.nuevaPieza.x>1){
-            panel.borrarPieza(panel.nuevaPieza)
-            panel.nuevaPieza.x=panel.nuevaPieza.x-1
-            console.log(panel.nuevaPieza.x)
-            panel.insertarPieza(panel.nuevaPieza)
+        panel.borrarPieza(panel.nuevaPieza)
+        panel.nuevaPieza.x=panel.nuevaPieza.x-1
+         
+
+        const resul = panel.insertarPieza(panel.nuevaPieza)
+
+        if(resul == true){
             panel.pintaPanel()
             panel.puntos=panel.puntos+10
-            panel.mostrarPuntos()
-            
+            panel.mostrarPuntos() 
+        }else{
+            panel.nuevaPieza.x=panel.nuevaPieza.x+1
+            panel.insertarPieza(panel.nuevaPieza)
         }
         
     },
     moverDra:() =>{
-        if(panel.nuevaPieza.x+panel.nuevaPieza.longitud<=10){
+        
         panel.borrarPieza(panel.nuevaPieza)
         panel.nuevaPieza.x=panel.nuevaPieza.x+1
-        console.log(panel.nuevaPieza.x)
-        panel.insertarPieza(panel.nuevaPieza)
-        panel.pintaPanel()
-        panel.puntos=panel.puntos+10
-        panel.mostrarPuntos()
+         
+
+        const resul = panel.insertarPieza(panel.nuevaPieza)
+
+        if(resul == true){
+            panel.pintaPanel()
+            panel.puntos=panel.puntos+10
+            panel.mostrarPuntos() 
+        }else{
+            panel.nuevaPieza.x=panel.nuevaPieza.x-1
+            panel.insertarPieza(panel.nuevaPieza)
         }
     },
     bajar:() =>{
-        // if(panel.nuevaPieza.y+panel.nuevaPieza.altura<=20){
-             if(panel.nuevaPieza.y>0){
+            if(panel.nuevaPieza.y>0){
                 panel.borrarPieza(panel.nuevaPieza)
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1
              }
-            // const indiceY = panel.nuevaPieza.altura
-            // const indiceX = panel.nuevaPieza.longitud
-            // let piezaY = 0
-            // let piezaX = 0
-            // let ocupado = 0
-            // for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
-            //     piezaY=0;
-            //     for(let index=panel.nuevaPieza.y;index<=panel.nuevaPieza.y+(indiceY-1);index++){
-            //         if(panel.nuevaPieza.matriz[piezaY][piezaX]>=1){
-            //             if((panel.matriz[index+1][longitud])>=1){
-            //                 ocupado++
-            //             }else{
-            //                 piezaY=piezaY+1;
-            //             }
-            //         }else{
-            //             // if(panel.nuevaPieza.matriz[piezaY][piezaX]==0 && panel.nuevaPieza.matriz[piezaY+1][piezaX]==0){
-            //             //     if((panel.matriz[index][longitud])>=1){  
-            //             //         ocupado++
-            //             //     }else{
-            //             //         piezaY++;
-            //             //     }
-            //             // }else{
-            //                 if((panel.matriz[index][longitud])>=1){  
-            //                     ocupado++
-            //                 }else{
-            //                     piezaY++;
-            //                 }
-            //             // }
-                        
-            //         }
-            //     }
-            //     piezaX=piezaX+1
-            // }
-            // if(ocupado>0){
-            //     panel.insertarPieza(panel.nuevaPieza)
-            //     const piezaNueva = panel.crearNuevaPieza()
-            //     panel.nuevaPieza = piezaNueva
-            //     panel.puntos=panel.puntos+50
-            // }else{
-            //     panel.nuevaPieza.y=panel.nuevaPieza.y+1
-            //     panel.puntos=panel.puntos+10
-            // }
 
-            
             const resul = panel.insertarPieza(panel.nuevaPieza)
 
             if(resul == true){
@@ -260,14 +223,99 @@ export const panel = {
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y-1
                 panel.insertarPieza(panel.nuevaPieza)
+                panel.limpiarLineas()
                 const piezaNueva = panel.crearNuevaPieza()
-                panel.nuevaPieza = piezaNueva
+
+                panel.nuevaPieza = piezasSiguientes[0]
+                piezasSiguientes[0]=piezasSiguientes[1]
+                piezasSiguientes[1]=piezasSiguientes[2]
+                piezasSiguientes[2]=piezaNueva
+                panel.mostrarPiezas()
                 panel.puntos=panel.puntos+50
             }
+    },
+    girar:() =>{        
+        panel.borrarPieza(panel.nuevaPieza)
+        panel.nuevaPieza.girar()
+         
+
+        const resul = panel.insertarPieza(panel.nuevaPieza)
+
+        if(resul == true){
+            panel.pintaPanel()
+            panel.puntos=panel.puntos+20
+            panel.mostrarPuntos() 
+        }else{
+            panel.nuevaPieza.girar()
+            panel.nuevaPieza.girar()
+            panel.nuevaPieza.girar()
+            panel.insertarPieza(panel.nuevaPieza)
+        }
+    },
+    limpiarLineas:()=>{
+        let hueco = 0
+        let filas = 0
+        let nuevoPanel=[
+            // [1,1,1,1,1,1,1,1,1,1,1,1],
+        ]
+        let panelMap
+        
+            panel.matriz.map((linea, index) =>{ 
+                hueco = 0
+                for (let x = 1; x <= 10; x++) {
+                    if(linea[x]==0){
+                         hueco++    
+                    }
+                }
+                if(hueco==0 && index != 0 && index != 21){ 
+                    filas++
+                }else{
+                    nuevoPanel.push(linea)
+                    console.log(linea)
+                }  
+                })
+
+                if(filas>=1){
+                    panel.lineas = panel.lineas+filas
+                    panel.mostrarLineas()
+                    nuevoPanel.reverse()
+                    nuevoPanel.pop()
+                    while(filas>0){
+                        nuevoPanel.push([1,0,0,0,0,0,0,0,0,0,0,1])
+                        filas--
+                    }
+                    nuevoPanel.push([1,1,1,1,1,1,1,1,1,1,1,1])
+                    nuevoPanel.reverse()
+                    panel.matriz = nuevoPanel
+                }
     },
 
     mostrarPuntos:()=>{
         document.querySelector('#puntos').innerHTML = panel.puntos
+    },
+
+    mostrarLineas:()=>{
+        document.querySelector('#lineas').innerHTML = panel.lineas
+    },
+
+    mostrarPiezas:()=>{
+        let html = `<div class="piezaSiguiente m-2 d-flex">
+        `
+        panel.piezasSiguientes.forEach((pieza, index) => {
+            
+            pieza.matriz.forEach(element => {
+                console.log(element)
+                if(element[index]>=1){
+                    html+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1 ${panel.bg[pieza.modelo-1]}"></div>`
+                }
+            });
+            html+=`
+        </div>
+        `
+            
+        });
+        
+        document.querySelector('#piezaSiguiente').innerHTML = html
     },
 
     iniciarMovimiento:() =>{
