@@ -84,17 +84,38 @@ export const panel = {
         const indiceX = pieza.longitud
         let piezaY = 0
         let piezaX = 0
+        let error=0
         for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
             for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
                 if(pieza.matriz[piezaY][piezaX]>=1){
-                    panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
+                    if(panel.matriz[i][longitud]>=1){
+                        error++
+                        console.log( i)
+                    }
                 }     
                 piezaX=piezaX+1
             }
             piezaX=0;
             piezaY=piezaY+1
-            
         }
+        piezaY = 0
+        piezaX = 0
+        if(error==0){
+            for(let i=pieza.y;i<=pieza.y+(indiceY-1);i++){
+                for(let longitud=pieza.x;longitud<=pieza.x+(indiceX-1);longitud++){
+                    if(pieza.matriz[piezaY][piezaX]>=1){
+                        panel.matriz[i][longitud]=pieza.matriz[piezaY][piezaX]
+                    }     
+                    piezaX=piezaX+1
+                }
+                piezaX=0;
+                piezaY=piezaY+1
+            }
+            return true
+        }else{
+            return false
+        }
+        
 
         // console.log(panel.matriz)
     },
@@ -182,56 +203,67 @@ export const panel = {
     },
     bajar:() =>{
         // if(panel.nuevaPieza.y+panel.nuevaPieza.altura<=20){
-            if(panel.nuevaPieza.y>0){
+             if(panel.nuevaPieza.y>0){
                 panel.borrarPieza(panel.nuevaPieza)
-            }
-            const indiceY = panel.nuevaPieza.altura
-            const indiceX = panel.nuevaPieza.longitud
-            let piezaY = 0
-            let piezaX = 0
-            let ocupado = 0
-            for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
-                piezaY=0;
-                for(let index=panel.nuevaPieza.y;index<=panel.nuevaPieza.y+(indiceY-1);index++){
-                    if(panel.nuevaPieza.matriz[piezaY][piezaX]>=1){
-                        if((panel.matriz[index+1][longitud])>=1){
-                            ocupado++
-                        }else{
-                            piezaY=piezaY+1;
-                        }
-                    }else{
-                        // if(panel.nuevaPieza.matriz[piezaY][piezaX]==0 && panel.nuevaPieza.matriz[piezaY+1][piezaX]==0){
-                        //     if((panel.matriz[index][longitud])>=1){  
-                        //         ocupado++
-                        //     }else{
-                        //         piezaY++;
-                        //     }
-                        // }else{
-                            if((panel.matriz[index][longitud])>=1){  
-                                ocupado++
-                            }else{
-                                piezaY++;
-                            }
-                        // }
+                panel.nuevaPieza.y=panel.nuevaPieza.y+1
+             }
+            // const indiceY = panel.nuevaPieza.altura
+            // const indiceX = panel.nuevaPieza.longitud
+            // let piezaY = 0
+            // let piezaX = 0
+            // let ocupado = 0
+            // for(let longitud=panel.nuevaPieza.x;longitud<=panel.nuevaPieza.x+(indiceX-1);longitud++){
+            //     piezaY=0;
+            //     for(let index=panel.nuevaPieza.y;index<=panel.nuevaPieza.y+(indiceY-1);index++){
+            //         if(panel.nuevaPieza.matriz[piezaY][piezaX]>=1){
+            //             if((panel.matriz[index+1][longitud])>=1){
+            //                 ocupado++
+            //             }else{
+            //                 piezaY=piezaY+1;
+            //             }
+            //         }else{
+            //             // if(panel.nuevaPieza.matriz[piezaY][piezaX]==0 && panel.nuevaPieza.matriz[piezaY+1][piezaX]==0){
+            //             //     if((panel.matriz[index][longitud])>=1){  
+            //             //         ocupado++
+            //             //     }else{
+            //             //         piezaY++;
+            //             //     }
+            //             // }else{
+            //                 if((panel.matriz[index][longitud])>=1){  
+            //                     ocupado++
+            //                 }else{
+            //                     piezaY++;
+            //                 }
+            //             // }
                         
-                    }
-                }
-                piezaX=piezaX+1
-            }
-            if(ocupado>0){
+            //         }
+            //     }
+            //     piezaX=piezaX+1
+            // }
+            // if(ocupado>0){
+            //     panel.insertarPieza(panel.nuevaPieza)
+            //     const piezaNueva = panel.crearNuevaPieza()
+            //     panel.nuevaPieza = piezaNueva
+            //     panel.puntos=panel.puntos+50
+            // }else{
+            //     panel.nuevaPieza.y=panel.nuevaPieza.y+1
+            //     panel.puntos=panel.puntos+10
+            // }
+
+            
+            const resul = panel.insertarPieza(panel.nuevaPieza)
+
+            if(resul == true){
+                panel.pintaPanel()
+                panel.puntos=panel.puntos+10
+                panel.mostrarPuntos() 
+            }else{
+                panel.nuevaPieza.y=panel.nuevaPieza.y-1
                 panel.insertarPieza(panel.nuevaPieza)
                 const piezaNueva = panel.crearNuevaPieza()
                 panel.nuevaPieza = piezaNueva
                 panel.puntos=panel.puntos+50
-            }else{
-                panel.nuevaPieza.y=panel.nuevaPieza.y+1
-                panel.puntos=panel.puntos+10
             }
-
-            panel.insertarPieza(panel.nuevaPieza)
-            panel.pintaPanel()
-            panel.mostrarPuntos()      
-            
     },
 
     mostrarPuntos:()=>{
@@ -244,9 +276,6 @@ export const panel = {
     
     pararMovimiento:()=>{
         clearInterval(movimiento)
-
     },
-
-    
-    
+ 
 }
