@@ -6,7 +6,7 @@ export class ModeloPieza{
         this.modelo = modelo    
         this.x = x
         this.matriz = models[this.modelo][this.angulo]
-        this. y = 1
+        this. y = 0
         this.longitud = this.matriz[0].length
         this.altura = this.matriz.length
     }
