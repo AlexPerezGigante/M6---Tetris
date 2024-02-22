@@ -282,10 +282,27 @@ export const panel = {
             panel.mostrarPuntos() 
             panel.subirNivel()
         }else{
-            panel.nuevaPieza.girar()
-            panel.nuevaPieza.girar()
-            panel.nuevaPieza.girar()
-            panel.insertarPieza(panel.nuevaPieza)
+            if(panel.nuevaPieza.longitud==3){
+                panel.nuevaPieza.x=panel.nuevaPieza.x-panel.nuevaPieza.longitud+2
+            }else{
+                panel.nuevaPieza.x=panel.nuevaPieza.x-panel.nuevaPieza.longitud+1
+            }
+            
+
+            const resulPared = panel.insertarPieza(panel.nuevaPieza)
+
+            if(resulPared == true){
+                panel.pintaPanel()
+                panel.mostrarPuntos() 
+                panel.subirNivel() 
+            }else{
+                panel.nuevaPieza.x=panel.nuevaPieza.x+panel.nuevaPieza.longitud-1
+                panel.nuevaPieza.girar()
+                panel.nuevaPieza.girar()
+                panel.nuevaPieza.girar()
+                panel.insertarPieza(panel.nuevaPieza)
+            }
+            
         }
     },
     limpiarLineas:()=>{
