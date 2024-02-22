@@ -10,7 +10,7 @@ export const jugar = {
 						class="col-4 d-flex flex-column justify-content-end align-items-center p-5"
 					>
 						<h4>Nivel: <span id="nivel">1</span></h4>
-						<h4>Tiempo: <span>00:00</span></h4>
+						<h4>Tiempo: <span id="tiempo">00:00</span></h4>
 						<h4>Lineas: <span id="lineas">0</span></h4>
 						<h4>Puntos: <span id="puntos">0</span></h4>
 					</div>

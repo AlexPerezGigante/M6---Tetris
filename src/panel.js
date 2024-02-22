@@ -441,9 +441,36 @@ export const panel = {
             panel.mostrarPiezas()
         }
     },
+    segundos: 0,
+    minutos: 0,
+    reloj:()=>{
+        if(panel.segundos<59){
+            panel.segundos++
+        }else{
+            panel.segundos=0
+            panel.minutos++
+        }
+        let html = ''
+        if(panel.minutos<10){
+           html +='0' + panel.minutos + ':'
+        }
+        else{
+            html += panel.minutos + ':'
+        }
+        if(panel.segundos<10){
+            html +='0' + panel.segundos
+        }else{
+            html += panel.segundos
+        }
+        
+
+        document.querySelector('#tiempo').innerHTML = html
+
+    },
 
     iniciarMovimiento:() =>{
         movimiento = setInterval(panel.bajar, 1000)
+        reloj = setInterval(panel.reloj, 1000)
     },
     
     pararMovimiento:()=>{
