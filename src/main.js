@@ -24,14 +24,13 @@ function cargarRanking(){
     ranking.script();
 }
 
-let cargar = 0
+
 function cargarJuego(){
     document.querySelector('main').innerHTML = jugar.template;
-    if(cargar<1)
-    {
+    
         jugar.script()
-        cargar++
-    }
+        
+    
     
 }
 

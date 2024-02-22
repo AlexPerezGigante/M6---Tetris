@@ -1,6 +1,10 @@
 import { ModeloPieza } from "./clase";
 import { models } from "./models";
+import { ranking } from "./vistas/ranking";
+import { modificaNick, modificaData, modificaData2, insertaNuevaPartida } from "./operaciones";
+
 let movimiento = ''
+let modal
 export const panel = {
     matriz: [
         [1,1,1,1,1,1,1,1,1,1,1,1],
@@ -41,6 +45,7 @@ export const panel = {
     lineas: 0,
     piezasSiguientes: [],
     piezaGuardada: '',
+    acabarPartida: 0,
     pintaPanel: () => {
         let html = ''
 
@@ -95,7 +100,7 @@ export const panel = {
                 if(pieza.matriz[piezaY][piezaX]>=1){
                     if(panel.matriz[i][longitud]>=1){
                         error++
-                        console.log( i)
+                        // console.log( i)
                     }
                 }     
                 piezaX=piezaX+1
@@ -115,9 +120,23 @@ export const panel = {
                 }
                 piezaX=0;
                 piezaY=piezaY+1
-            }
+            }  
             return true
+            
         }else{
+            
+            if(pieza.y==1){
+                console.log(pieza.x, 11-pieza.longitud)
+                if(pieza.x==0 || pieza.x==(11-pieza.longitud+1)){    
+                }else{
+                    panel.acabarPartida=1
+                    console.log('Has perdido')
+                    panel.abrirModal()
+                    panel.guardarPartida()
+                    panel.pararMovimiento()
+                }
+                
+            }
             return false
         }
         
@@ -146,38 +165,45 @@ export const panel = {
 
     controlTeclas:()=>{
         document.addEventListener("keydown", function(event){
-            switch (event.key) {
-                case 'ArrowLeft':
-                    event.preventDefault()
-                    panel.moverIzq()
-                    return false;
-                break;
-                case 'ArrowUp':
-                    event.preventDefault()
-                    panel.girar()
-                    return false;
-                break;
-                case 'ArrowRight':
-                    event.preventDefault()
-                    panel.moverDra()
-                    return false;
-                break;
-                case 'ArrowDown':
-                    event.preventDefault()
-                    panel.bajar()
-                    return false;
-                break;
-                case 'Control':
-                    event.preventDefault()
-                    panel.cambiarPieza()
-                    return false
-                break;
-            
-                default:
-                      console.log(event.key)
-                    
-                break;
-            }
+            if(panel.acabarPartida==0){
+                switch (event.key) {
+                    case 'ArrowLeft':
+                        event.preventDefault()
+                        panel.moverIzq()
+                        return false;
+                    break;
+                    case 'ArrowUp':
+                        event.preventDefault()
+                        panel.girar()
+                        return false;
+                    break;
+                    case 'ArrowRight':
+                        event.preventDefault()
+                        panel.moverDra()
+                        return false;
+                    break;
+                    case 'ArrowDown':
+                        event.preventDefault()
+                        panel.bajar()
+                        panel.puntos++
+                        panel.mostrarPuntos()
+                        return false;
+                    break;
+                    case 'Control':
+                        event.preventDefault()
+                        panel.cambiarPieza()
+                        return false
+                    break;
+                    case ' ':
+                        event.preventDefault()
+                        return false
+                
+                    default:
+                          console.log(event.key)
+                        
+                    break;
+                }
+            } 
             
         })
     },
@@ -191,7 +217,6 @@ export const panel = {
 
         if(resul == true){
             panel.pintaPanel()
-            panel.puntos=panel.puntos+10
             panel.mostrarPuntos() 
             panel.subirNivel()
         }else{
@@ -210,7 +235,6 @@ export const panel = {
 
         if(resul == true){
             panel.pintaPanel()
-            panel.puntos=panel.puntos+10
             panel.mostrarPuntos() 
             panel.subirNivel()
         }else{
@@ -219,22 +243,22 @@ export const panel = {
         }
     },
     bajar:() =>{
-            if(panel.nuevaPieza.y>0){
                 panel.borrarPieza(panel.nuevaPieza)
                 panel.nuevaPieza.y=panel.nuevaPieza.y+1
-             }
+             
 
             const resul = panel.insertarPieza(panel.nuevaPieza)
 
             if(resul == true){
+                
                 panel.pintaPanel()
-                panel.puntos=panel.puntos+10
                 
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y-1
                 panel.insertarPieza(panel.nuevaPieza)
                 panel.limpiarLineas()
                 const piezaNueva = panel.crearNuevaPieza()
+                panel.insertarPieza(panel.nuevaPieza)
 
                 panel.nuevaPieza = panel.piezasSiguientes[0]
                 panel.piezasSiguientes[0]=panel.piezasSiguientes[1]
@@ -245,6 +269,7 @@ export const panel = {
             }
             panel.mostrarPuntos() 
             panel.subirNivel()
+            
     },
     girar:() =>{        
         panel.borrarPieza(panel.nuevaPieza)
@@ -254,7 +279,6 @@ export const panel = {
 
         if(resul == true){
             panel.pintaPanel()
-            panel.puntos=panel.puntos+20
             panel.mostrarPuntos() 
             panel.subirNivel()
         }else{
@@ -270,7 +294,7 @@ export const panel = {
         let nuevoPanel=[
             // [1,1,1,1,1,1,1,1,1,1,1,1],
         ]
-        let panelMap
+        
         
             panel.matriz.map((linea, index) =>{ 
                 hueco = 0
@@ -287,8 +311,10 @@ export const panel = {
                 })
 
                 if(filas>=1){
+                    panel.puntos=panel.puntos+100
                     panel.lineas = panel.lineas+filas
                     panel.mostrarLineas()
+                    panel.mostrarPuntos()
                     nuevoPanel.reverse()
                     nuevoPanel.pop()
                     while(filas>0){
@@ -319,11 +345,11 @@ export const panel = {
             pieza.matriz.forEach((element) => {
                 html+=`<div class="d-flex ms-3  ">`
                 element.forEach((casilla) =>{
-                    console.log(casilla)
+                    
                     if(casilla>=1){
-                        html+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-6 ${panel.bg[casilla-1]}"></div>`
+                        html+=`<div style=" width: 30px;  height: 30px;"  class="border border-light-subtle m-0 col-6 ${panel.bg[casilla-1]}"></div>`
                     }else{
-                        html+=`<div style=" width: 40px;  height: 40px;"  class=" m-0 col-6"></div>`
+                        html+=`<div style=" width: 30px;  height: 30px;"  class=" m-0 col-6"></div>`
                     }
                 })
                 html+=`</div>`
@@ -443,7 +469,8 @@ export const panel = {
     },
     segundos: 0,
     minutos: 0,
-    reloj:()=>{
+    reloj:'',
+    contarReloj:()=>{
         if(panel.segundos<59){
             panel.segundos++
         }else{
@@ -467,15 +494,51 @@ export const panel = {
         document.querySelector('#tiempo').innerHTML = html
 
     },
+    abrirModal:()=>{
+        modal = new bootstrap.Modal('#exampleModal');
+        modal.show();
+    },
+    quitarModal:()=>{
+        console.log(modal)
+		modal.hide()
+    },
 
     iniciarMovimiento:() =>{
         movimiento = setInterval(panel.bajar, 1000)
-        reloj = setInterval(panel.reloj, 1000)
+        panel.reloj = setInterval(panel.contarReloj, 1000)
     },
     
     pararMovimiento:()=>{
         clearInterval(movimiento)
-
-        // document.removeEventListener("keydown", teclas)
+        clearInterval(panel.reloj)
+        // document.removeEventListener("keydown", panel.controlTeclas(), true)
     },
+     guardarPartida:()=>{
+        console.log('guardando')
+        panel.pararMovimiento()
+        document.querySelector('#formGuardar').classList.remove('d-none')
+        
+        const botonEnviar = document.querySelector('#enviar')
+        botonEnviar.addEventListener('click', () => {
+            event.preventDefault()
+            const nombre = document.querySelector('#nombre').value.toUpperCase()
+            const puntos = panel.puntos
+            console.log(nombre, puntos)
+            const fecha = new Date()
+
+            const partida = {
+                avatar : 'https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg',
+                nick : modificaNick(nombre) ,
+                puntos : puntos,
+                fecha : modificaData(modificaData2(fecha))
+            }
+            insertaNuevaPartida(partida)
+
+
+             document.querySelector('main').innerHTML = ranking.template;
+             ranking.script();
+
+        })
+    }
+    
 }
