@@ -36,8 +36,11 @@ export const panel = {
         ["bg-secondary"]
     ],
     puntos: 0,
+    puntosNecesarios: 5000,
+    nivel: 1,
     lineas: 0,
     piezasSiguientes: [],
+    piezaGuardada: '',
     pintaPanel: () => {
         let html = ''
 
@@ -164,9 +167,14 @@ export const panel = {
                     panel.bajar()
                     return false;
                 break;
+                case 'Control':
+                    event.preventDefault()
+                    panel.cambiarPieza()
+                    return false
+                break;
             
                 default:
-                    // console.log(event.key)
+                      console.log(event.key)
                     
                 break;
             }
@@ -185,6 +193,7 @@ export const panel = {
             panel.pintaPanel()
             panel.puntos=panel.puntos+10
             panel.mostrarPuntos() 
+            panel.subirNivel()
         }else{
             panel.nuevaPieza.x=panel.nuevaPieza.x+1
             panel.insertarPieza(panel.nuevaPieza)
@@ -203,6 +212,7 @@ export const panel = {
             panel.pintaPanel()
             panel.puntos=panel.puntos+10
             panel.mostrarPuntos() 
+            panel.subirNivel()
         }else{
             panel.nuevaPieza.x=panel.nuevaPieza.x-1
             panel.insertarPieza(panel.nuevaPieza)
@@ -219,32 +229,34 @@ export const panel = {
             if(resul == true){
                 panel.pintaPanel()
                 panel.puntos=panel.puntos+10
-                panel.mostrarPuntos() 
+                
             }else{
                 panel.nuevaPieza.y=panel.nuevaPieza.y-1
                 panel.insertarPieza(panel.nuevaPieza)
                 panel.limpiarLineas()
                 const piezaNueva = panel.crearNuevaPieza()
 
-                panel.nuevaPieza = piezasSiguientes[0]
-                piezasSiguientes[0]=piezasSiguientes[1]
-                piezasSiguientes[1]=piezasSiguientes[2]
-                piezasSiguientes[2]=piezaNueva
+                panel.nuevaPieza = panel.piezasSiguientes[0]
+                panel.piezasSiguientes[0]=panel.piezasSiguientes[1]
+                panel.piezasSiguientes[1]=panel.piezasSiguientes[2]
+                panel.piezasSiguientes[2]=piezaNueva
                 panel.mostrarPiezas()
                 panel.puntos=panel.puntos+50
             }
+            panel.mostrarPuntos() 
+            panel.subirNivel()
     },
     girar:() =>{        
         panel.borrarPieza(panel.nuevaPieza)
         panel.nuevaPieza.girar()
          
-
         const resul = panel.insertarPieza(panel.nuevaPieza)
 
         if(resul == true){
             panel.pintaPanel()
             panel.puntos=panel.puntos+20
             panel.mostrarPuntos() 
+            panel.subirNivel()
         }else{
             panel.nuevaPieza.girar()
             panel.nuevaPieza.girar()
@@ -271,7 +283,6 @@ export const panel = {
                     filas++
                 }else{
                     nuevoPanel.push(linea)
-                    console.log(linea)
                 }  
                 })
 
@@ -292,6 +303,7 @@ export const panel = {
 
     mostrarPuntos:()=>{
         document.querySelector('#puntos').innerHTML = panel.puntos
+        document.querySelector('#nivel').innerHTML = panel.nivel
     },
 
     mostrarLineas:()=>{
@@ -299,23 +311,135 @@ export const panel = {
     },
 
     mostrarPiezas:()=>{
-        let html = `<div class="piezaSiguiente m-2 d-flex">
-        `
-        panel.piezasSiguientes.forEach((pieza, index) => {
-            
-            pieza.matriz.forEach(element => {
-                console.log(element)
-                if(element[index]>=1){
-                    html+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-1 ${panel.bg[pieza.modelo-1]}"></div>`
-                }
+        let html =''
+        console.log(panel.piezasSiguientes)
+        panel.piezasSiguientes.forEach((pieza) => {
+            html += `<div class="piezaSiguiente m-2 ms-2 mt-1">
+            `
+            pieza.matriz.forEach((element) => {
+                html+=`<div class="d-flex ms-3  ">`
+                element.forEach((casilla) =>{
+                    console.log(casilla)
+                    if(casilla>=1){
+                        html+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-6 ${panel.bg[casilla-1]}"></div>`
+                    }else{
+                        html+=`<div style=" width: 40px;  height: 40px;"  class=" m-0 col-6"></div>`
+                    }
+                })
+                html+=`</div>`
+                
             });
             html+=`
         </div>
         `
-            
         });
+
+        
+        if(panel.piezaGuardada!=''){
+            let htmlPiezaGuardada=''
+
+            htmlPiezaGuardada += `<div class="piezaSiguiente m-2 ms-2 mt-1">
+            `
+            panel.piezaGuardada.matriz.forEach((element) => {
+                htmlPiezaGuardada+=`<div class="d-flex ms-3  ">`
+                element.forEach((casilla) =>{
+                    console.log(casilla)
+                    if(casilla>=1){
+                        htmlPiezaGuardada+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-6 ${panel.bg[casilla-1]}"></div>`
+                    }else{
+                        htmlPiezaGuardada+=`<div style=" width: 40px;  height: 40px;"  class=" m-0 col-6"></div>`
+                    }
+                })
+                htmlPiezaGuardada+=`</div>`
+                
+            });
+            
+
+            document.querySelector('.piezaGuardada').innerHTML = htmlPiezaGuardada
+        }
         
         document.querySelector('#piezaSiguiente').innerHTML = html
+    },
+
+    cambiarPieza:()=>{
+        console.log(panel.nuevaPieza)
+        panel.borrarPieza(panel.nuevaPieza)
+        console.log(panel.matriz)
+        if(panel.piezaGuardada==''){
+            panel.piezaGuardada=panel.nuevaPieza
+            panel.nuevaPieza = panel.piezasSiguientes[0]
+            panel.nuevaPieza.y = panel.piezaGuardada.y
+            panel.nuevaPieza.x = panel.piezaGuardada.x
+            const resul = panel.insertarPieza(panel.nuevaPieza)
+
+            if(resul == true){
+                panel.pintaPanel()
+                const piezaNueva = panel.crearNuevaPieza()
+                panel.piezasSiguientes[0]=panel.piezasSiguientes[1]
+                panel.piezasSiguientes[1]=panel.piezasSiguientes[2]
+                panel.piezasSiguientes[2]=piezaNueva
+            }else{
+                panel.nuevaPieza=panel.piezaGuardada
+                panel.piezaGuardada=''
+                panel.insertarPieza(panel.nuevaPieza)
+            }     
+        }else{
+            const aux = panel.nuevaPieza
+            panel.nuevaPieza = panel.piezaGuardada
+            panel.nuevaPieza.y = aux.y
+            panel.nuevaPieza.x = aux.x
+            panel.piezaGuardada = aux
+            const resul = panel.insertarPieza(panel.nuevaPieza)
+            if(resul == true){
+                panel.pintaPanel()
+                
+            }else{
+                panel.piezaGuardada=panel.nuevaPieza
+                panel.nuevaPieza=aux
+                panel.insertarPieza(panel.nuevaPieza)
+            }
+        }
+        panel.mostrarPiezas()
+    },
+
+    subirNivel:() =>{
+        if(panel.puntos>=panel.puntosNecesarios){
+            const panelVacio = [
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1]
+            ]
+
+            panel.matriz = panelVacio
+            panel.puntosNecesarios=panel.puntosNecesarios+5000
+            panel.nivel++
+            const piezaNueva = panel.crearNuevaPieza()
+
+            panel.nuevaPieza = panel.piezasSiguientes[0]
+            panel.piezasSiguientes[0]=panel.piezasSiguientes[1]
+            panel.piezasSiguientes[1]=panel.piezasSiguientes[2]
+            panel.piezasSiguientes[2]=piezaNueva
+            panel.mostrarPiezas()
+        }
     },
 
     iniciarMovimiento:() =>{
@@ -324,6 +448,7 @@ export const panel = {
     
     pararMovimiento:()=>{
         clearInterval(movimiento)
+
+        // document.removeEventListener("keydown", teclas)
     },
- 
 }
