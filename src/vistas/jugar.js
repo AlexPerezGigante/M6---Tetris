@@ -119,14 +119,21 @@ export const jugar = {
     `,
 	script:() => {
 		panel.controlTeclas()
-
-		panel.pintaPanel()
-
+		panel.puntos=panel.puntosNecesarios
+		panel.minutos=0
+		panel.segundos=0
+		panel.nivel=0
 		panel.nuevaPieza = panel.crearNuevaPieza()
 
-		panel.piezasSiguientes.push(panel.crearNuevaPieza())
-		panel.piezasSiguientes.push(panel.crearNuevaPieza())
-		panel.piezasSiguientes.push(panel.crearNuevaPieza())
+		panel.piezasSiguientes[0]=(panel.crearNuevaPieza())
+		panel.piezasSiguientes[1]=(panel.crearNuevaPieza())
+		panel.piezasSiguientes[2]=(panel.crearNuevaPieza())
+
+		panel.subirNivel()
+		panel.puntos=0
+		panel.pintaPanel()
+
+		
 
 
 		panel.insertarPieza(panel.nuevaPieza)
@@ -134,43 +141,14 @@ export const jugar = {
 		panel.pintaPanel()
 		panel.mostrarPiezas()
 		panel.iniciarMovimiento()
-		if(panel.minutos>0 || panel.segundos>0){
+		if(panel.partida>0){
 			panel.pararMovimiento()
 		}
+		panel.partida++
 
 		const botonGuardar = document.querySelector('#guardar')
 		botonGuardar.addEventListener('click', panel.guardarPartida)
 
-		
-
-		// function guardarPartida(){
-		// 	console.log('guardando')
-		// 	panel.pararMovimiento()
-		// 	document.querySelector('#formGuardar').classList.remove('d-none')
-		// 	botonGuardar.classList.add('d-none')
-		// 	// panel.abrirModal()
-		// 	const botonEnviar = document.querySelector('#enviar')
-		// 	botonEnviar.addEventListener('click', () => {
-		// 		event.preventDefault()
-		// 		const nombre = document.querySelector('#nombre').value.toUpperCase()
-		// 		const puntos = panel.puntos
-		// 		console.log(nombre, puntos)
-		// 		const fecha = new Date()
-
-		// 		const partida = {
-		// 			avatar : 'https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg',
-		// 			nick : modificaNick(nombre) ,
-		// 			puntos : puntos,
-		// 			fecha : modificaData(modificaData2(fecha))
-		// 		}
-		// 		insertaNuevaPartida(partida)
-
-
-		// 		 document.querySelector('main').innerHTML = ranking.template;
-    	// 		 ranking.script();
-
-		// 	})
-		// }
 			
 	}
 

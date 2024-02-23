@@ -1,6 +1,7 @@
 import { ModeloPieza } from "./clase";
 import { models } from "./models";
 import { ranking } from "./vistas/ranking";
+import { jugar } from "./vistas/jugar";
 import { modificaNick, modificaData, modificaData2, insertaNuevaPartida } from "./operaciones";
 
 let movimiento = ''
@@ -43,9 +44,14 @@ export const panel = {
     puntosNecesarios: 5000,
     nivel: 1,
     lineas: 0,
-    piezasSiguientes: [],
+    piezasSiguientes: [
+        [],
+        [],
+        []
+    ],
     piezaGuardada: '',
     acabarPartida: 0,
+    partida: 0,
     pintaPanel: () => {
         let html = ''
 
@@ -126,7 +132,7 @@ export const panel = {
         }else{
             
             if(pieza.y==1){
-                console.log(pieza.x, 11-pieza.longitud)
+                // console.log(pieza.x, 11-pieza.longitud)
                 if(pieza.x==0 || pieza.x==(11-pieza.longitud+1)){    
                 }else{
                     panel.acabarPartida=1
@@ -199,7 +205,7 @@ export const panel = {
                         return false
                 
                     default:
-                          console.log(event.key)
+                        //   console.log(event.key)
                         
                     break;
                 }
@@ -355,7 +361,7 @@ export const panel = {
 
     mostrarPiezas:()=>{
         let html =''
-        console.log(panel.piezasSiguientes)
+        // console.log(panel.piezasSiguientes)
         panel.piezasSiguientes.forEach((pieza) => {
             html += `<div class="piezaSiguiente m-2 ms-2 mt-1">
             `
@@ -386,7 +392,7 @@ export const panel = {
             panel.piezaGuardada.matriz.forEach((element) => {
                 htmlPiezaGuardada+=`<div class="d-flex ms-3  ">`
                 element.forEach((casilla) =>{
-                    console.log(casilla)
+                    // console.log(casilla)
                     if(casilla>=1){
                         htmlPiezaGuardada+=`<div style=" width: 40px;  height: 40px;"  class="border border-light-subtle m-0 col-6 ${panel.bg[casilla-1]}"></div>`
                     }else{
@@ -405,9 +411,9 @@ export const panel = {
     },
 
     cambiarPieza:()=>{
-        console.log(panel.nuevaPieza)
+        // console.log(panel.nuevaPieza)
         panel.borrarPieza(panel.nuevaPieza)
-        console.log(panel.matriz)
+        // console.log(panel.matriz)
         if(panel.piezaGuardada==''){
             panel.piezaGuardada=panel.nuevaPieza
             panel.nuevaPieza = panel.piezasSiguientes[0]
@@ -516,7 +522,7 @@ export const panel = {
         modal.show();
     },
     quitarModal:()=>{
-        console.log(modal)
+        // console.log(modal)
 		modal.hide()
     },
 
@@ -534,13 +540,14 @@ export const panel = {
         console.log('guardando')
         panel.pararMovimiento()
         document.querySelector('#formGuardar').classList.remove('d-none')
+        panel.partida=0
         
         const botonEnviar = document.querySelector('#enviar')
         botonEnviar.addEventListener('click', () => {
             event.preventDefault()
             const nombre = document.querySelector('#nombre').value.toUpperCase()
             const puntos = panel.puntos
-            console.log(nombre, puntos)
+            // console.log(nombre, puntos)
             const fecha = new Date()
 
             const partida = {
@@ -555,6 +562,13 @@ export const panel = {
              document.querySelector('main').innerHTML = ranking.template;
              ranking.script();
 
+        })
+
+        const botonCerrar = document.querySelector('#cerrar')
+        botonCerrar.addEventListener('click', () => {
+            // console.log('cerrando partida')
+            panel.partida=0
+            jugar.script()
         })
     }
     
