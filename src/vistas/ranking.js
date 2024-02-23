@@ -20,6 +20,7 @@ export const ranking = {
 
 // Esta función creará las tablas del ranking
 function pintaRanking() {
+	const arrayOrdenado = orden('puntuacion', 'down')
     let tablaRanking = `
     <h2 class="text-center text-light">Ranking</h2>
 					<table class="table table-dark align-middle">
@@ -34,21 +35,21 @@ function pintaRanking() {
 						<tbody>
 							<tr>
 								<td class="fs-2">1</td>
-								<td><img src="https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg" alt="avatar" /></td>
-								<td>ANDER</td>
-								<td>1255</td>
+								<td><img src="${arrayOrdenado[0].avatar}" alt="avatar" /></td>
+								<td>${arrayOrdenado[0].nick}</td>
+								<td>${arrayOrdenado[0].puntos}</td>
 							</tr>
 							<tr>
 								<td class="fs-2">2</td>
-								<td><img src="https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg" alt="avatar" /></td>
-								<td>ANDER</td>
-								<td>1255</td>
+								<td><img src="${arrayOrdenado[1].avatar}" alt="avatar" /></td>
+								<td>${arrayOrdenado[1].nick}</td>
+								<td>${arrayOrdenado[1].puntos}</td>
 							</tr>
 							<tr>
 								<td class="fs-2">3</td>
-								<td><img src="https://www.svgrepo.com/show/384669/account-avatar-profile-user-13.svg" alt="avatar" /></td>
-								<td>ANDER</td>
-								<td>1255</td>
+								<td><img src="${arrayOrdenado[2].avatar}" alt="avatar" /></td>
+								<td>${arrayOrdenado[2].nick}</td>
+								<td>${arrayOrdenado[2].puntos}</td>
 							</tr>
 						</tbody>
 						<tfoot></tfoot>
