@@ -140,11 +140,11 @@ export const jugar = {
 
 		panel.pintaPanel()
 		panel.mostrarPiezas()
+		panel.pararMovimiento()
 		panel.iniciarMovimiento()
-		if(panel.partida>0){
-			panel.pararMovimiento()
-		}
+		
 		panel.partida++
+		
 
 		const botonGuardar = document.querySelector('#guardar')
 		botonGuardar.addEventListener('click', panel.guardarPartida)

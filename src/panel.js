@@ -6,6 +6,7 @@ import { modificaNick, modificaData, modificaData2, insertaNuevaPartida } from "
 
 let movimiento = ''
 let modal
+let control
 export const panel = {
     matriz: [
         [1,1,1,1,1,1,1,1,1,1,1,1],
@@ -170,7 +171,7 @@ export const panel = {
     },
 
     controlTeclas:()=>{
-        document.addEventListener("keydown", function(event){
+        control = document.addEventListener("keydown", function(event){
             if(panel.acabarPartida==0){
                 switch (event.key) {
                     case 'ArrowLeft':
@@ -538,6 +539,7 @@ export const panel = {
     },
      guardarPartida:()=>{
         console.log('guardando')
+        document.removeEventListener('keydown', control, false)
         panel.pararMovimiento()
         document.querySelector('#formGuardar').classList.remove('d-none')
         panel.partida=0
@@ -568,8 +570,15 @@ export const panel = {
         botonCerrar.addEventListener('click', () => {
             // console.log('cerrando partida')
             panel.partida=0
+            document.removeEventListener('keydown', function(){
+                console.log('quitando evento')
+                return false
+            })
+            panel.pararMovimiento()
             jugar.script()
         })
     }
+
+
     
 }

@@ -1,4 +1,4 @@
-import { partidas, datosPartida, pintaDatosPartida, buscador, orden} from "../operaciones";
+import { partidas, buscador, orden} from "../operaciones";
 export const ranking = {
     template: //html
     `
@@ -66,7 +66,7 @@ function pintaTabla(partida) {
 						<input
 							type="text"
 							class="form-control"
-							placeholder="Buscador"
+							placeholder="Buscador nick"
 							aria-label="Buscador"
 							aria-describedby="button-addon2"
 						/>
@@ -100,15 +100,29 @@ function pintaTabla(partida) {
 }
 function pintaDatos(partida){
 	// Con el bucle for each añadimos los datos del array de objetos
+	
 	let tabla =''
-    partida.forEach((element) => { 
-		tabla += `<tr>
+    partida.forEach((element, index) => { 
+		if(typeof partida == 'string'){
+			if(partidas[index].nick==partida){
+				tabla += `<tr>
                     <td><img src="${element.avatar}" alt="avatar" /></td>
                     <td>${element.nick}</td>
                     <td>${element.puntos}</td>
                     <td>${element.fecha}</td>
                 </tr>
-                `;
+                `
+			}
+		}else{
+			tabla += `<tr>
+                    <td><img src="${element.avatar}" alt="avatar" /></td>
+                    <td>${element.nick}</td>
+                    <td>${element.puntos}</td>
+                    <td>${element.fecha}</td>
+                </tr>
+                `
+		}
+		;
     });
     tabla += `		
                 </tbody>
