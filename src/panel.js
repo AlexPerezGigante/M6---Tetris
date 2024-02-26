@@ -264,13 +264,13 @@ export const panel = {
                 panel.nuevaPieza.y=panel.nuevaPieza.y-1
                 panel.insertarPieza(panel.nuevaPieza)
                 panel.limpiarLineas()
-                const piezaNueva = panel.crearNuevaPieza()
-                panel.insertarPieza(panel.nuevaPieza)
 
+                const piezaNueva = panel.crearNuevaPieza()
                 panel.nuevaPieza = panel.piezasSiguientes[0]
                 panel.piezasSiguientes[0]=panel.piezasSiguientes[1]
                 panel.piezasSiguientes[1]=panel.piezasSiguientes[2]
                 panel.piezasSiguientes[2]=piezaNueva
+                panel.insertarPieza(panel.nuevaPieza)
                 panel.mostrarPiezas()
                 panel.puntos=panel.puntos+50
             }
@@ -286,6 +286,7 @@ export const panel = {
 
         if(resul == true){
             panel.pintaPanel()
+            panel.puntos=panel.puntos+10
             panel.mostrarPuntos() 
             panel.subirNivel()
         }else{
@@ -300,14 +301,16 @@ export const panel = {
 
             if(resulPared == true){
                 panel.pintaPanel()
-                panel.mostrarPuntos() 
-                panel.subirNivel() 
+                
+                panel.mostrarPuntos()  
+                
             }else{
                 panel.nuevaPieza.x=panel.nuevaPieza.x+panel.nuevaPieza.longitud-1
                 panel.nuevaPieza.girar()
                 panel.nuevaPieza.girar()
                 panel.nuevaPieza.girar()
                 panel.insertarPieza(panel.nuevaPieza)
+                
             }
             
         }
@@ -333,22 +336,44 @@ export const panel = {
                     nuevoPanel.push(linea)
                 }  
                 })
-
-                if(filas>=1){
-                    panel.puntos=panel.puntos+100
-                    panel.lineas = panel.lineas+filas
-                    panel.mostrarLineas()
-                    panel.mostrarPuntos()
-                    nuevoPanel.reverse()
-                    nuevoPanel.pop()
-                    while(filas>0){
-                        nuevoPanel.push([1,0,0,0,0,0,0,0,0,0,0,1])
-                        filas--
+                if(filas==4){
+                    console.log(panel.matriz)
+                    if(filas>=1){
+                        panel.puntos=panel.puntos+100
+                        panel.lineas = panel.lineas+filas
+                        panel.mostrarLineas()
+                        panel.mostrarPuntos()
+                        nuevoPanel.reverse()
+                        nuevoPanel.pop()
+                        while(filas>0){
+                            nuevoPanel.push([1,0,0,0,0,0,0,0,0,0,0,1])
+                            filas--
+                        }
+                        nuevoPanel.push([1,1,1,1,1,1,1,1,1,1,1,1])
+                        nuevoPanel.reverse()
+                        panel.matriz = nuevoPanel
+                        panel.subirNivel()
                     }
-                    nuevoPanel.push([1,1,1,1,1,1,1,1,1,1,1,1])
-                    nuevoPanel.reverse()
-                    panel.matriz = nuevoPanel
+                    console.log(panel.matriz)
+                }else{
+                    if(filas>=1){
+                        panel.puntos=panel.puntos+100
+                        panel.lineas = panel.lineas+filas
+                        panel.mostrarLineas()
+                        panel.mostrarPuntos()
+                        nuevoPanel.reverse()
+                        nuevoPanel.pop()
+                        while(filas>0){
+                            nuevoPanel.push([1,0,0,0,0,0,0,0,0,0,0,1])
+                            filas--
+                        }
+                        nuevoPanel.push([1,1,1,1,1,1,1,1,1,1,1,1])
+                        nuevoPanel.reverse()
+                        panel.matriz = nuevoPanel
+                        panel.subirNivel()
+                    }
                 }
+                
     },
 
     mostrarPuntos:()=>{
@@ -454,6 +479,7 @@ export const panel = {
 
     subirNivel:() =>{
         if(panel.puntos>=panel.puntosNecesarios){
+            console.log('has subido de nivel')
             const panelVacio = [
                 [1,1,1,1,1,1,1,1,1,1,1,1],
                 [1,0,0,0,0,0,0,0,0,0,0,1],
@@ -480,15 +506,10 @@ export const panel = {
             ]
 
             panel.matriz = panelVacio
+            console.log(panel.matriz, panel.puntosNecesarios)
+            panel.pintaPanel()
             panel.puntosNecesarios=panel.puntosNecesarios+5000
             panel.nivel++
-            const piezaNueva = panel.crearNuevaPieza()
-
-            panel.nuevaPieza = panel.piezasSiguientes[0]
-            panel.piezasSiguientes[0]=panel.piezasSiguientes[1]
-            panel.piezasSiguientes[1]=panel.piezasSiguientes[2]
-            panel.piezasSiguientes[2]=piezaNueva
-            panel.mostrarPiezas()
         }
     },
     segundos: 0,
